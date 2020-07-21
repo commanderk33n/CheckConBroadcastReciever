@@ -2,6 +2,7 @@ package team.campfire.checkconbroadcastreciever;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver MyReceiver = null;
     protected WebView wv;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,21 +55,7 @@ public class MainActivity extends AppCompatActivity {
             if (status.isEmpty()) {
                 status = "No Internet Connection";
             }
-            Boolean inetConnected = false;
-            try {
-              inetConnected = NetworkUtil.isConnected();
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
             Toast.makeText(context, status, Toast.LENGTH_LONG).show();
-
-            if(inetConnected) {
-                wv.evaluateJavascript("internetIsConnected()",null);
-
-            } else {
-                wv.evaluateJavascript("internetIsNotConnected()",null);
-            }
-
             switch (status) {
                 case "Wifi enabled":
                     wv.evaluateJavascript("networkStatus('Wifi enabled');", null);
@@ -79,8 +67,20 @@ public class MainActivity extends AppCompatActivity {
                     wv.evaluateJavascript("networkStatus('No internet is available');", null);
                     break;
             }
+            
+            boolean inetConnected = false;
+            try {
+                inetConnected = NetworkUtil.isConnected();
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
 
+            if (inetConnected) {
+                wv.evaluateJavascript("internetIsConnected()", null);
 
+            } else {
+                wv.evaluateJavascript("internetIsNotConnected()", null);
+            }
         }
     }
 }
