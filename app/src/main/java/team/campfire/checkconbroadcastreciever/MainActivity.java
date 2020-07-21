@@ -33,6 +33,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        broadcastIntent();
+    }
+    
+    @Override
     protected void onPause() {
         super.onPause();
         unregisterReceiver(MyReceiver);
@@ -50,8 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
             switch (status) {
                 case "Wifi enabled":
-                    wv.evaluateJavascript("isOnline()", null);
-                    break;
                 case "Mobile data enabled":
                     wv.evaluateJavascript("isOnline()", null);
                     break;
