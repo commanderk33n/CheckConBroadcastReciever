@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.webkit.WebView;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver MyReceiver = null;
     protected WebView wv;
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPostResume();
         broadcastIntent();
     }
-    
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -51,16 +53,30 @@ public class MainActivity extends AppCompatActivity {
             if (status.isEmpty()) {
                 status = "No Internet Connection";
             }
+            Boolean inetConnected = false;
+            try {
+              inetConnected = NetworkUtil.isConnected();
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
             Toast.makeText(context, status, Toast.LENGTH_LONG).show();
 
+            if(inetConnected) {
+                wv.evaluateJavascript("internetIsConnected()",null);
+
+            } else {
+                wv.evaluateJavascript("internetIsNotConnected()",null);
+            }
 
             switch (status) {
                 case "Wifi enabled":
+                    wv.evaluateJavascript("networkStatus('Wifi enabled');", null);
+                    break;
                 case "Mobile data enabled":
-                    wv.evaluateJavascript("isOnline()", null);
+                    wv.evaluateJavascript("networkStatus('Mobile data enabled');", null);
                     break;
                 case "No internet is available":
-                    wv.evaluateJavascript("isOffline()", null);
+                    wv.evaluateJavascript("networkStatus('No internet is available');", null);
                     break;
             }
 

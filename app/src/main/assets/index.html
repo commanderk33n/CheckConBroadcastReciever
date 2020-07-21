@@ -3,26 +3,29 @@
     <title>demooooo</title>
     <script language="javascript">
 
-        function testEcho(x) {
-            document.getElementById("test").innerHTML = x;
-        }
+    function testEcho(x) {
+        document.getElementById("test").innerHTML = x;
+    }
 
-        function isOffline() {
-        document.getElementById("offline").innerHTML = "is Offline";
-        document.getElementById("online").innerHTML  = "";
-        }
+    function networkStatus(type) {
+        document.getElementById("status").innerHTML  = type;
+    }
 
-         function isOnline() {
-         document.getElementById("offline").innerHTML = "";
-        document.getElementById("online").innerHTML  = "is Online";
-        }
+    function internetIsConnected() {
+        document.getElementById("internet").innerHTML = "Internet ist verfügbar"
+    }
 
-</script>
+    function internetIsNotConnected() {
+        document.getElementById("internet").innerHTML = "Internet ist nicht verfügbar"
+    }
+
+
+    </script>
 </head>
 <body>
-geht hier was?<br />
-<p id="test"></p><br />
-<p id="online"></p><br />
-<p id="offline"></p><br />
+NetworkCheck:<br/>
+<p id="status"></p><br/>
+<p>Ping-Check: </p>
+<p id="internet"></p><br/>
 </body>
 </html>

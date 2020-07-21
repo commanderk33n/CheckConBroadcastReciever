@@ -4,6 +4,9 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import java.io.IOException;
+
+
 class NetworkUtil {
     public static String getConnectivityStatusString(Context context) {
         String status = null;
@@ -22,5 +25,10 @@ class NetworkUtil {
             return status;
         }
         return status;
+    }
+
+    public static boolean isConnected() throws InterruptedException, IOException {
+        final String command = "ping -c 1 google.com";
+        return Runtime.getRuntime().exec(command).waitFor() == 0;
     }
 }
